@@ -13,10 +13,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        ndk { abiFilters += listOf("arm64-v8a") }
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -35,9 +39,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.2")
     implementation("io.coil-kt:coil-compose:2.7.0")
 
-    // Scanner dokumen (deteksi tepi, crop, filter, import galeri)
     implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0")
-    // OCR (ekspor ke .txt)
-    implementation("com.google.mlkit:text-recognition:16.0.1")
+    // OCR versi ringan: model diunduh lewat Google Play Services, tidak ikut di APK
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 }
